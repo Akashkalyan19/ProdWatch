@@ -3,6 +3,7 @@ CREATE TABLE incident_events (
     incident_id UUID NOT NULL REFERENCES incidents(id),
     organization_id UUID NOT NULL REFERENCES organizations(id),
     event_type TEXT NOT NULL,
+    message TEXT,
     created_by UUID NOT NULL REFERENCES users(id),
     created_at TIMESTAMP NOT NULL DEFAULT NOW()
 );

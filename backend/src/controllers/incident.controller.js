@@ -31,16 +31,15 @@ const createInc = async (req, res, next) => {
 const updateInc = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, message } = req.body;
 
-    const updated = await incService.updateInc(req.user, id, status);
+    const updated = await incService.updateInc(req.user, id, status, message);
 
     res.status(200).json(updated);
   } catch (err) {
     next(err);
   }
 };
-
 module.exports = {
   getAllInc,
   getIncById,
