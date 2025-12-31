@@ -1,6 +1,6 @@
 const pool = require("../db/pool");
 
-const getByName = async (org_name) => {
+const getOrgByName = async (org_name) => {
   const result = await pool.query(
     `
     SELECT *
@@ -12,7 +12,7 @@ const getByName = async (org_name) => {
   return result.rows[0];
 };
 
-const getByNameAndJoinCode = async (org_name, join_code) => {
+const getOrgByNameAndJoinCode = async (org_name, join_code) => {
   const result = await pool.query(
     `
     SELECT *
@@ -36,9 +36,32 @@ const createOrg = async (org_name) => {
   );
   return result.rows[0];
 };
+const changeCode = async (newCode, organization_id) => {
+  const result = await pool.query(
+    `
+    UPDATE organizations
+    SET join_code = $1
+    WHERE id = $2
+    RETURNING join_code
+    `,
+    [newCode, organization_id]
+  );
 
+  return result.rows[0].join_code;
+};
+const getAllMembers = async (org_id) => {
+  const result = await pool.query(
+    `
+    SELECT name,email,role FROM users
+    WHERE organization_id = $1`,
+    [org_id]
+  );
+  return result.rows;
+};
 module.exports = {
-  getByName,
-  getByNameAndJoinCode,
+  getOrgByName,
+  getOrgByNameAndJoinCode,
   createOrg,
+  changeCode,
+  getAllMembers,
 };

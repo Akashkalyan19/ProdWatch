@@ -2,12 +2,12 @@ const jwt = require("../utils/jwt");
 const { hashPassword, comparePassword } = require("../utils/password");
 
 const userRepo = require("../repositories/user.repo");
-const organizationRepo = require("../repositories/organization.repo");
+const organizationRepo = require("../repositories/org.repo");
 
 const registerOrg = async ({ org_name, user_name, email, password }) => {
   const normalizedOrgName = org_name.trim().toLowerCase();
 
-  const existingOrg = await organizationRepo.getByName(normalizedOrgName);
+  const existingOrg = await organizationRepo.getOrgByName(normalizedOrgName);
   if (existingOrg) {
     throw new Error("Organization already exists");
   }
@@ -47,7 +47,7 @@ const registerUser = async ({
 }) => {
   const normalizedOrgName = org_name.trim().toLowerCase();
 
-  const organization = await organizationRepo.getByNameAndJoinCode(
+  const organization = await organizationRepo.getOrgByNameAndJoinCode(
     normalizedOrgName,
     join_code
   );
