@@ -40,9 +40,23 @@ const updateInc = async (req, res, next) => {
     next(err);
   }
 };
+const addMessage = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { message } = req.body;
+
+    const event = await incService.addMessage(req.user, id, message);
+
+    res.status(201).json(event);
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   getAllInc,
   getIncById,
   createInc,
   updateInc,
+  addMessage,
 };

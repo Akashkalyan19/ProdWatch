@@ -15,6 +15,12 @@ router.post(
   requireRole("owner", "team_lead"),
   incController.createInc
 );
+router.post(
+  "/:id/message",
+  authMiddleware,
+  requireRole("owner", "team_lead", "engineer"),
+  incController.addMessage
+);
 
 router.patch(
   "/:id/status",

@@ -51,18 +51,38 @@ const createInc = async ({
   return result.rows[0];
 };
 
-const updateIncStatus = async (organization_id, id, status) => {
-  const result = await pool.query(
-    `
-    UPDATE incidents
-    SET status = $1, updated_at = NOW()
-    WHERE id = $2 AND organization_id = $3
-    RETURNING *
-    `,
-    [status, id, organization_id]
-  );
+/**
+ * AUDITED UPDATE
+ */
+const updateIncStatus = async (organization_id, id, status, userId) => {
+  const client = await pool.connect();
 
-  return result.rows[0];
+  try {
+    await client.query("BEGIN");
+
+    await client.query("SELECT set_config('app.current_user_id', $1, true)", [
+      userId,
+    ]);
+
+    const result = await client.query(
+      `
+      UPDATE incidents
+      SET status = $1, updated_at = NOW()
+      WHERE id = $2 AND organization_id = $3
+      RETURNING *
+      `,
+      [status, id, organization_id]
+    );
+
+    await client.query("COMMIT");
+
+    return result.rows[0];
+  } catch (err) {
+    await client.query("ROLLBACK");
+    throw err;
+  } finally {
+    client.release();
+  }
 };
 
 module.exports = {

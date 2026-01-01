@@ -70,7 +70,8 @@ const updateInc = async (user, id, newStatus, message) => {
   const updatedIncident = await incRepo.updateIncStatus(
     user.organization_id,
     id,
-    newStatus
+    newStatus,
+    user.id
   );
 
   // 🧾 INCIDENT EVENT WITH MESSAGE
@@ -84,9 +85,31 @@ const updateInc = async (user, id, newStatus, message) => {
 
   return updatedIncident;
 };
+
+const addMessage = async (user, incidentId, message) => {
+  if (!message || message.trim().length < 5) {
+    throw new Error("Message must be at least 5 characters long");
+  }
+
+  const incident = await incRepo.getIncById(user.organization_id, incidentId);
+
+  if (!incident) {
+    throw new Error("Incident not found");
+  }
+
+  return await incEventRepo.createEvent({
+    incident_id: incidentId,
+    organization_id: user.organization_id,
+    event_type: "note_added",
+    created_by: user.id,
+    message: message.trim(),
+  });
+};
+
 module.exports = {
   getAllInc,
   getIncById,
   createInc,
   updateInc,
+  addMessage,
 };
