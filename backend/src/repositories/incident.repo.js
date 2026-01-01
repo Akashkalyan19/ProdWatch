@@ -13,7 +13,6 @@ const getAllInc = async (organization_id) => {
 
   return result.rows;
 };
-
 const getIncById = async (organization_id, id) => {
   const result = await pool.query(
     `

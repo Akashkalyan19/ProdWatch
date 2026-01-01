@@ -47,6 +47,10 @@ const createInc = async (user, data) => {
   return incident;
 };
 
+const getIncidentEvents = async (user, incidentId) => {
+  return await incEventRepo.getByIncidentId(user.organization_id, incidentId);
+};
+
 const updateInc = async (user, id, newStatus, message) => {
   const incident = await incRepo.getIncById(user.organization_id, id);
 
@@ -112,4 +116,5 @@ module.exports = {
   createInc,
   updateInc,
   addMessage,
+  getIncidentEvents,
 };

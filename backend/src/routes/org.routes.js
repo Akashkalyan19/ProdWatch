@@ -11,5 +11,11 @@ router.post(
   orgController.changeCode
 );
 router.get("/allMembers", authMiddleware, orgController.getAllMembers);
+router.patch(
+  "/members/:userId/role",
+  authMiddleware,
+  requireRole("owner"),
+  orgController.updateMemberRole
+);
 
 module.exports = router;

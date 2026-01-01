@@ -9,6 +9,8 @@ router.get("/", authMiddleware, incController.getAllInc);
 
 router.get("/:id", authMiddleware, incController.getIncById);
 
+router.get("/:id/events", authMiddleware, incController.getIncidentEvents);
+
 router.post(
   "/",
   authMiddleware,

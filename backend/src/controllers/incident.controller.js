@@ -40,6 +40,15 @@ const updateInc = async (req, res, next) => {
     next(err);
   }
 };
+const getIncidentEvents = async (req, res, next) => {
+  try {
+    const events = await incService.getIncidentEvents(req.user, req.params.id);
+    res.json(events);
+  } catch (err) {
+    next(err);
+  }
+};
+
 const addMessage = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -59,4 +68,5 @@ module.exports = {
   createInc,
   updateInc,
   addMessage,
+  getIncidentEvents,
 };

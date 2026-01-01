@@ -23,8 +23,25 @@ const getAllMembers = async (req, res, next) => {
     next(err);
   }
 };
+const updateMemberRole = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { role } = req.body;
+
+    const updatedUser = await orgService.updateMemberRole(
+      req.user,
+      userId,
+      role
+    );
+
+    res.json(updatedUser);
+  } catch (err) {
+    next(err);
+  }
+};
 
 module.exports = {
   changeCode,
+  updateMemberRole,
   getAllMembers,
 };

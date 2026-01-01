@@ -24,7 +24,21 @@ const createEvent = async ({
 
   return result.rows[0];
 };
+const getByIncidentId = async (orgId, incidentId) => {
+  const result = await pool.query(
+    `
+    SELECT id, event_type, message, created_by, created_at
+    FROM incident_events
+    WHERE incident_id = $1
+      AND organization_id = $2
+    ORDER BY created_at ASC
+    `,
+    [incidentId, orgId]
+  );
+  return result.rows;
+};
 
 module.exports = {
   createEvent,
+  getByIncidentId,
 };
