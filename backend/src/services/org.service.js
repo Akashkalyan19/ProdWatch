@@ -1,5 +1,8 @@
 const orgRepo = require("../repositories/org.repo");
 
+const getCode = async (user) => {
+  return await orgRepo.getCode(user.organization_id);
+};
 const changeCode = async (newCode, user) => {
   if (!newCode) {
     throw new Error("Invalid new code");
@@ -35,4 +38,5 @@ module.exports = {
   changeCode,
   getAllMembers,
   updateMemberRole,
+  getCode,
 };

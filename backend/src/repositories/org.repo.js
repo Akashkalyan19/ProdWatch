@@ -1,5 +1,14 @@
 const pool = require("../db/pool");
 
+const getCode = async (org_id) => {
+  const result = await pool.query(
+    `
+    SELECT join_code FROM organizations
+    WHERE id = $1`,
+    [org_id]
+  );
+  return result.rows;
+};
 const getOrgByName = async (org_name) => {
   const result = await pool.query(
     `
@@ -87,4 +96,5 @@ module.exports = {
   createOrg,
   changeCode,
   getAllMembers,
+  getCode,
 };

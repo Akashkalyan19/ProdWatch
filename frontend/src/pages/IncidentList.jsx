@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { apiFetch } from "../api/apiClient";
 import IncidentDetail from "./IncidentDetail";
+import { useAuth } from "../context/AuthContext";
+
+const statusBadge = {
+  open: "bg-red-100 text-red-700",
+  investigating: "bg-yellow-100 text-yellow-700",
+  mitigated: "bg-blue-100 text-blue-700",
+  resolved: "bg-green-100 text-green-700",
+};
 
 function IncidentList() {
   const [incidents, setIncidents] = useState([]);
@@ -8,9 +16,14 @@ function IncidentList() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { token } = useAuth();
+
   useEffect(() => {
+    if (!token) return;
+
     const fetchIncidents = async () => {
       try {
+        setLoading(true);
         const data = await apiFetch("/incidents");
         setIncidents(data);
       } catch (err) {
@@ -21,7 +34,7 @@ function IncidentList() {
     };
 
     fetchIncidents();
-  }, []);
+  }, [token]);
 
   if (selectedId) {
     return (
@@ -32,23 +45,33 @@ function IncidentList() {
     );
   }
 
-  if (loading) return <p>Loading incidents...</p>;
-  if (error) return <p>Error: {error}</p>;
-  if (incidents.length === 0) return <p>No incidents yet.</p>;
+  if (loading) return <p className="text-gray-600">Loading incidents…</p>;
+  if (error) return <p className="text-red-600">{error}</p>;
+  if (incidents.length === 0)
+    return <p className="text-gray-600 bg-[#EDF4ED]">No incidents yet.</p>;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+    <div className="bg-[#EDF4ED] rounded-lg shadow border ">
       <h2 className="text-lg font-semibold px-4 py-3 border-b">Incidents</h2>
 
-      <ul>
+      <ul className="divide-y bg-[#EDF4ED]">
         {incidents.map((incident) => (
           <li
             key={incident.id}
             onClick={() => setSelectedId(incident.id)}
-            className="px-4 py-3 border-b hover:bg-gray-50 cursor-pointer flex justify-between"
+            className="px-4 py-3 flex items-center justify-between hover:bg-gray-50 cursor-pointer transition"
           >
-            <span className="font-medium">{incident.title}</span>
-            <span className="text-sm text-gray-600">{incident.status}</span>
+            <div>
+              <p className="font-medium">{incident.title}</p>
+            </div>
+
+            <span
+              className={`text-xs px-2 py-1 rounded ${
+                statusBadge[incident.status]
+              }`}
+            >
+              {incident.status}
+            </span>
           </li>
         ))}
       </ul>

@@ -11,7 +11,6 @@ const getUserByEmail = async (email) => {
   );
   return result.rows[0];
 };
-
 const createUser = async ({
   name,
   email,

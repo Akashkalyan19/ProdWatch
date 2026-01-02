@@ -1,7 +1,7 @@
 const INCIDENT_TRANSITIONS = {
   open: ["investigating"],
-  investigating: ["mitigated"],
-  mitigated: ["resolved"],
+  investigating: ["mitigated", "resolved"],
+  mitigated: ["resolved", "investigating"],
   resolved: [],
 };
 

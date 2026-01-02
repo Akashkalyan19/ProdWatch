@@ -28,6 +28,11 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({ email, password }),
     });
 
+    // 🔥 WRITE FIRST (this is the fix)
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("user", JSON.stringify(data.user));
+
+    // THEN update React state
     setToken(data.token);
     setUser(data.user);
   };

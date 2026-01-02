@@ -37,7 +37,7 @@ function RegisterOrg() {
       <div>
         <label>Organization Name</label>
         <input
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           value={orgName}
           onChange={(e) => setOrgName(e.target.value)}
           required
@@ -47,7 +47,7 @@ function RegisterOrg() {
       <div>
         <label>Your Name</label>
         <input
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           value={userName}
           onChange={(e) => setUserName(e.target.value)}
           required
@@ -57,7 +57,7 @@ function RegisterOrg() {
       <div>
         <label>Email</label>
         <input
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -68,7 +68,7 @@ function RegisterOrg() {
       <div>
         <label>Password</label>
         <input
-          className="w-full border px-3 py-2 rounded"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
@@ -79,7 +79,7 @@ function RegisterOrg() {
       {error && <p>{error}</p>}
 
       <button
-        className="w-full bg-black text-white py-2 rounded"
+        className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black bg-[#51291E] text-white mt-6"
         type="submit"
         disabled={loading}
       >

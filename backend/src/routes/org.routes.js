@@ -4,7 +4,13 @@ const orgController = require("../controllers/org.controller");
 const authMiddleware = require("../middlewares/auth.middleware");
 const requireRole = require("../middlewares/role.middleware");
 
-router.post(
+router.get(
+  "/code",
+  authMiddleware,
+  requireRole("owner"),
+  orgController.getCode
+);
+router.patch(
   "/change_code",
   authMiddleware,
   requireRole("owner"),

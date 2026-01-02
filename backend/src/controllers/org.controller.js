@@ -1,10 +1,20 @@
 const { all } = require("../routes/auth.routes");
 const orgService = require("../services/org.service");
 
+const getCode = async (req, res, next) => {
+  try {
+    const code = await orgService.getCode(req.user);
+    console.log("requesting code");
+    console.log(`response:${JSON.stringify(code)}`);
+    res.status(200).send(code);
+  } catch (err) {
+    next(err);
+  }
+};
 const changeCode = async (req, res, next) => {
   try {
     const { join_code } = req.body;
-
+    console.log("change request came");
     const updatedCode = await orgService.changeCode(join_code, req.user);
 
     res.status(200).json({
@@ -44,4 +54,5 @@ module.exports = {
   changeCode,
   updateMemberRole,
   getAllMembers,
+  getCode,
 };

@@ -100,52 +100,30 @@ function IncidentDetail({ incidentId, onBack }) {
       {/* Back */}
       <button
         onClick={onBack}
-        className="text-sm text-blue-600 hover:underline"
+        className=" bg-[#EDF4ED] text-sm text-black hover:underline border rounded-sm p-1"
       >
         ← Back to Incidents
       </button>
 
       {/* Header */}
-      <div className="bg-white border rounded p-6">
-        <h2 className="text-2xl font-semibold mb-2">{incident.title}</h2>
-        <p className="text-gray-700 mb-4">{incident.description}</p>
+      <div className="bg-[#EDF4ED] border rounded-lg p-6">
+        <div className="flex items-start justify-between">
+          <div>
+            <h2 className="text-2xl font-semibold mb-1">{incident.title}</h2>
+            <p className="text-gray-600">{incident.description}</p>
+          </div>
 
-        <span
-          className={`inline-block text-sm px-3 py-1 rounded ${
-            statusColor[incident.status]
-          }`}
-        >
-          {incident.status}
-        </span>
-      </div>
-
-      {/* Add Note */}
-      <div className="bg-white border rounded p-6">
-        <h3 className="font-medium mb-3">Add Note</h3>
-
-        <form onSubmit={handleAddNote} className="space-y-3">
-          <textarea
-            className="w-full border rounded px-3 py-2"
-            rows={3}
-            placeholder="Add an update or investigation note…"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-          />
-
-          {actionError && <p className="text-sm text-red-600">{actionError}</p>}
-
-          <button
-            type="submit"
-            disabled={submitting}
-            className="bg-black text-white px-4 py-2 rounded"
+          <span
+            className={`text-sm px-3 py-1 rounded ${
+              statusColor[incident.status]
+            }`}
           >
-            {submitting ? "Adding…" : "Add Note"}
-          </button>
-        </form>
+            {incident.status}
+          </span>
+        </div>
       </div>
-
       {/* Update Status */}
-      <div className="bg-white border rounded p-6">
+      <div className="bg-[#EDF4ED] border rounded-lg p-6">
         <h3 className="font-medium mb-3">Update Status</h3>
 
         <form onSubmit={handleStatusUpdate} className="space-y-3">
@@ -181,23 +159,63 @@ function IncidentDetail({ incidentId, onBack }) {
           </button>
         </form>
       </div>
+      {/* Add Note */}
+      <div className="bg-[#EDF4ED] border rounded-lg p-6">
+        <h3 className="font-medium mb-3">Add Note</h3>
 
+        <form onSubmit={handleAddNote} className="space-y-3">
+          <textarea
+            className="w-full border rounded px-3 py-2"
+            rows={3}
+            placeholder="Add an update or investigation note…"
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+          />
+
+          {actionError && <p className="text-sm text-red-600">{actionError}</p>}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            className="bg-black text-white px-4 py-2 rounded"
+          >
+            {submitting ? "Adding…" : "Add Note"}
+          </button>
+        </form>
+      </div>
       {/* Timeline */}
-      <div className="bg-white border rounded p-6">
+      <div className="bg-[#EDF4ED] border rounded p-6 max-h-[400px] overflow-y-auto">
         <h3 className="font-medium mb-4">Timeline</h3>
 
         <ul className="space-y-4">
-          {events.map((e) => (
-            <li key={e.id} className="border-l-2 border-gray-300 pl-4">
-              <p className="font-medium">{e.event_type}</p>
+          {[...events].reverse().map((e) => (
+            <li key={e.id} className="flex gap-4">
+              {/* Dot */}
+              <div className="flex flex-col items-center">
+                <span className="w-2 h-2 bg-gray-400 rounded-full mt-2" />
+                <span className="flex-1 w-px bg-gray-300" />
+              </div>
 
-              {e.message && (
-                <p className="text-gray-700 text-sm">{e.message}</p>
-              )}
+              {/* Content */}
+              <div>
+                {/* Primary line */}
+                <p className="text-sm font-medium text-gray-800">
+                  {e.actor_name}{" "}
+                  {e.event_type === "status_change" && "changed status"}
+                  {e.event_type === "note" && "added a note"}
+                  {e.event_type === "created" && "created the incident"}
+                </p>
 
-              <p className="text-xs text-gray-500">
-                {new Date(e.created_at).toLocaleString()}
-              </p>
+                {/* Optional message */}
+                {e.message && (
+                  <p className="text-sm text-gray-700 mt-1">{e.message}</p>
+                )}
+
+                {/* Timestamp */}
+                <p className="text-xs text-gray-500 mt-1">
+                  {new Date(e.created_at).toLocaleString()}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
