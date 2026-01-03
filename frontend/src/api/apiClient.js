@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = process.env.VITE_BASE_URL;
 
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem("token");
