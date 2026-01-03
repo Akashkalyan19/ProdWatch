@@ -123,65 +123,71 @@ function IncidentDetail({ incidentId, onBack }) {
         </div>
       </div>
       {/* Update Status */}
-      <div className="bg-[#EDF4ED] border rounded-lg p-6">
-        <h3 className="font-medium mb-3">Update Status</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-[#EDF4ED] border rounded-lg p-6">
+          <h3 className="font-medium mb-3">Update Status</h3>
 
-        <form onSubmit={handleStatusUpdate} className="space-y-3">
-          <select
-            className="w-full border rounded px-3 py-2"
-            value={newStatus}
-            onChange={(e) => setNewStatus(e.target.value)}
-          >
-            <option value="">Select new status</option>
-            {STATUS_OPTIONS.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
+          <form onSubmit={handleStatusUpdate} className="space-y-3">
+            <select
+              className="w-full border rounded px-3 py-2"
+              value={newStatus}
+              onChange={(e) => setNewStatus(e.target.value)}
+            >
+              <option value="">Select new status</option>
+              {STATUS_OPTIONS.map((s) => (
+                <option key={s} value={s}>
+                  {s}
+                </option>
+              ))}
+            </select>
 
-          <textarea
-            className="w-full border rounded px-3 py-2"
-            rows={3}
-            placeholder="Why are you changing the status?"
-            value={statusMessage}
-            onChange={(e) => setStatusMessage(e.target.value)}
-          />
+            <textarea
+              className="w-full border rounded px-3 py-2"
+              rows={3}
+              placeholder="Why are you changing the status?"
+              value={statusMessage}
+              onChange={(e) => setStatusMessage(e.target.value)}
+            />
 
-          {statusError && <p className="text-sm text-red-600">{statusError}</p>}
+            {statusError && (
+              <p className="text-sm text-red-600">{statusError}</p>
+            )}
 
-          <button
-            type="submit"
-            disabled={updatingStatus}
-            className="bg-black text-white px-4 py-2 rounded"
-          >
-            {updatingStatus ? "Updating…" : "Update Status"}
-          </button>
-        </form>
-      </div>
-      {/* Add Note */}
-      <div className="bg-[#EDF4ED] border rounded-lg p-6">
-        <h3 className="font-medium mb-3">Add Note</h3>
+            <button
+              type="submit"
+              disabled={updatingStatus}
+              className="px-3 bg-[#51291E] text-white py-2 rounded-lg hover:bg-gray-800 transition"
+            >
+              {updatingStatus ? "Updating…" : "Update Status"}
+            </button>
+          </form>
+        </div>
+        {/* Add Note */}
+        <div className="bg-[#EDF4ED] border rounded-lg p-6">
+          <h3 className="font-medium mb-3">Add Note</h3>
 
-        <form onSubmit={handleAddNote} className="space-y-3">
-          <textarea
-            className="w-full border rounded px-3 py-2"
-            rows={3}
-            placeholder="Add an update or investigation note…"
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-          />
+          <form onSubmit={handleAddNote} className="space-y-3">
+            <textarea
+              className="w-full border rounded px-3 py-2"
+              rows={3}
+              placeholder="Add an update or investigation note…"
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+            />
 
-          {actionError && <p className="text-sm text-red-600">{actionError}</p>}
+            {actionError && (
+              <p className="text-sm text-red-600">{actionError}</p>
+            )}
 
-          <button
-            type="submit"
-            disabled={submitting}
-            className="bg-black text-white px-4 py-2 rounded"
-          >
-            {submitting ? "Adding…" : "Add Note"}
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="px-3 bg-[#51291E] text-white py-2 rounded-lg hover:bg-gray-800 transition"
+            >
+              {submitting ? "Adding…" : "Add Note"}
+            </button>
+          </form>
+        </div>
       </div>
       {/* Timeline */}
       <div className="bg-[#EDF4ED] border rounded p-6 max-h-100 overflow-y-auto">

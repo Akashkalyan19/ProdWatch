@@ -1,9 +1,5 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-if (!API_BASE_URL) {
-  throw new Error("VITE_API_BASE_URL is not defined");
-}
-
 export const apiFetch = async (endpoint, options = {}) => {
   const token = localStorage.getItem("token");
 
@@ -16,6 +12,17 @@ export const apiFetch = async (endpoint, options = {}) => {
     ...options,
     headers,
   });
+
+  // 🔴 HANDLE EXPIRED / INVALID TOKEN GLOBALLY
+  if (response.status === 401 || response.status === 403) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    // Hard redirect to reset app state
+    window.location.href = "/";
+    return;
+  }
+
   const contentType = response.headers.get("content-type");
   if (!contentType || !contentType.includes("application/json")) {
     throw new Error("Server did not return JSON");

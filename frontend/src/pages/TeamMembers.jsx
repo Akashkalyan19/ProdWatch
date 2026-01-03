@@ -62,7 +62,7 @@ function TeamMembers() {
     <div className="space-y-6">
       {/* Owner-only Organization Access */}
       {isOwner && (
-        <div className="bg-white border border-gray-200 rounded-lg p-4">
+        <div className="bg-[#EDF4ED] border border-gray-200 rounded-lg p-4">
           <h3 className="text-sm font-medium text-gray-900 mb-3">
             Organization Access Code
           </h3>
@@ -85,7 +85,7 @@ function TeamMembers() {
             <button
               onClick={updateJoinCode}
               disabled={saving || !newCode.trim()}
-              className="text-sm text-indigo-600 hover:underline disabled:text-gray-400"
+              className="px-3 bg-[#51291E] text-white py-2 rounded-lg hover:bg-gray-800 transition"
             >
               {saving ? "Updating…" : "Update"}
             </button>
@@ -98,7 +98,7 @@ function TeamMembers() {
       )}
 
       {/* Members Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-[#79B791]">
         {members.map((member) => (
           <MemberCard
             key={member.id}

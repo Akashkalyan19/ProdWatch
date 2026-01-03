@@ -4,7 +4,7 @@ function MemberCard({ member, isOwner, onChangeRole }) {
   const { id, name, email, role } = member;
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-4 flex items-center justify-between">
+    <div className="bg-[#EDF4ED] border border-gray-200 rounded-lg p-4 flex items-center justify-between">
       {/* Member info */}
       <div>
         <p className="font-medium text-gray-900">{name}</p>
@@ -20,7 +20,7 @@ function MemberCard({ member, isOwner, onChangeRole }) {
         {isOwner && role === "engineer" && (
           <button
             onClick={() => onChangeRole(id, "team_lead")}
-            className="text-xs text-indigo-600 hover:underline"
+            className="px-3 bg-[#51291E] text-white py-2 rounded-lg hover:bg-gray-800 transition"
           >
             Promote
           </button>
@@ -29,7 +29,7 @@ function MemberCard({ member, isOwner, onChangeRole }) {
         {isOwner && role === "team_lead" && (
           <button
             onClick={() => onChangeRole(id, "engineer")}
-            className="text-xs text-indigo-600 hover:underline"
+            className="px-3 bg-[#51291E] text-white py-2 rounded-lg hover:bg-gray-800 transition"
           >
             Demote
           </button>
