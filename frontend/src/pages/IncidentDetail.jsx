@@ -184,7 +184,7 @@ function IncidentDetail({ incidentId, onBack }) {
         </form>
       </div>
       {/* Timeline */}
-      <div className="bg-[#EDF4ED] border rounded p-6 max-h-[400px] overflow-y-auto">
+      <div className="bg-[#EDF4ED] border rounded p-6 max-h-100 overflow-y-auto">
         <h3 className="font-medium mb-4">Timeline</h3>
 
         <ul className="space-y-4">

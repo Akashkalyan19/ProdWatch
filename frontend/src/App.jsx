@@ -30,7 +30,7 @@ function App() {
           <button
             onClick={() => setActivePage("incidents")}
             className={
-              "w-full bg-[#51291E] text-left border-1 border-[#51291E]  text-white px-3 py-2 rounded-lg hover:bg-[#EDF4ED] hover:text-[#51291E] "
+              "w-full bg-[#51291E] text-left border border-[#51291E]  text-white px-3 py-2 rounded-lg hover:bg-[#EDF4ED] hover:text-[#51291E] "
             }
           >
             Incidents
@@ -38,7 +38,7 @@ function App() {
 
           <button
             onClick={() => setActivePage("team")}
-            className="w-full bg-[#51291E] text-left border-1 border-[#51291E]  text-white px-3 py-2 rounded-lg hover:bg-[#EDF4ED] hover:text-[#51291E] "
+            className="w-full bg-[#51291E] text-left border border-[#51291E]  text-white px-3 py-2 rounded-lg hover:bg-[#EDF4ED] hover:text-[#51291E] "
           >
             Team Members
           </button>

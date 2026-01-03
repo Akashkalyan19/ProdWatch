@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { apiFetch } from "../api/apiClient";
 import { useAuth } from "../context/AuthContext";
+import MemberCard from "../components/MemberCard";
 
 function TeamMembers() {
   const { user } = useAuth();
@@ -11,6 +12,8 @@ function TeamMembers() {
   const [newCode, setNewCode] = useState("");
   const [saving, setSaving] = useState(false);
 
+  /* ------------------ data loaders ------------------ */
+
   const loadMembers = async () => {
     const data = await apiFetch("/org/allMembers");
     setMembers(data);
@@ -19,14 +22,15 @@ function TeamMembers() {
   const loadJoinCode = async () => {
     if (!isOwner) return;
     const data = await apiFetch("/org/code");
-    console.log(data);
-    setJoinCode(data[0].join_code);
+    setJoinCode(data[0]?.join_code || "");
   };
 
   useEffect(() => {
     loadMembers();
     loadJoinCode();
-  }, []);
+  }, []); // intentional: page-load fetch only
+
+  /* ------------------ actions ------------------ */
 
   const assignRole = async (id, role) => {
     await apiFetch(`/org/members/${id}/role`, {
@@ -39,16 +43,20 @@ function TeamMembers() {
   const updateJoinCode = async () => {
     if (!newCode.trim()) return;
 
-    setSaving(true);
-    const data = await apiFetch("/org/change_Code", {
-      method: "PATCH",
-      body: JSON.stringify({ join_code: newCode }),
-    });
-
-    setJoinCode(data.join_code);
-    setNewCode("");
-    setSaving(false);
+    try {
+      setSaving(true);
+      const data = await apiFetch("/org/change_Code", {
+        method: "PATCH",
+        body: JSON.stringify({ join_code: newCode }),
+      });
+      setJoinCode(data.join_code);
+      setNewCode("");
+    } finally {
+      setSaving(false);
+    }
   };
+
+  /* ------------------ render ------------------ */
 
   return (
     <div className="space-y-6">
@@ -89,53 +97,16 @@ function TeamMembers() {
         </div>
       )}
 
-      {/* Members table */}
-      <div className="bg-white rounded-lg shadow border border-gray-200">
-        <h2 className="text-lg font-semibold px-4 py-3 border-b">
-          Team Members
-        </h2>
-
-        <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-gray-600">
-            <tr>
-              <th className="px-4 py-2 text-left">Name</th>
-              <th className="px-4 py-2 text-left">Email</th>
-              <th className="px-4 py-2 text-left">Role</th>
-            </tr>
-          </thead>
-
-          <tbody className="divide-y">
-            {members.map((m) => (
-              <tr key={m.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2 font-medium">{m.name}</td>
-                <td className="px-4 py-2 text-gray-600">{m.email}</td>
-                <td className="px-4 py-2">
-                  <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-700">
-                    {m.role}
-                  </span>
-
-                  {isOwner && m.role === "engineer" && (
-                    <button
-                      onClick={() => assignRole(m.id, "team_lead")}
-                      className="ml-3 text-xs text-indigo-600 hover:underline"
-                    >
-                      Promote
-                    </button>
-                  )}
-
-                  {isOwner && m.role === "team_lead" && (
-                    <button
-                      onClick={() => assignRole(m.id, "engineer")}
-                      className="ml-3 text-xs text-indigo-600 hover:underline"
-                    >
-                      Demote
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      {/* Members Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {members.map((member) => (
+          <MemberCard
+            key={member.id}
+            member={member}
+            isOwner={isOwner}
+            onChangeRole={assignRole}
+          />
+        ))}
       </div>
     </div>
   );
